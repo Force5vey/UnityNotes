@@ -82,7 +82,7 @@ public class NotesEditorRenderer
 
       if ( GUILayout.Button(notesEditor.AllNotesExpanded ? "Collapse" : "Expand", GUILayout.Width(75)) )
       {
-         notesEditor.Functions.ToggleAllNotes();
+         notesEditor.Functions.ToggleAllNotes(notesEditor.CurrentNotesCollection);
       }
 
       if ( GUILayout.Button("New Note", GUILayout.Width(75)) )
@@ -96,20 +96,23 @@ public class NotesEditorRenderer
          notesEditor.Functions.RemoveCompletedNotes();
       }
 
-      EditorGUILayout.LabelField("    Tools:", GUILayout.Width(50) );
-      if ( GUILayout.Button("Import", GUILayout.Width(100)) )
-      {
-         if ( !EditorWindow.HasOpenInstances<ScriptScanner>() )
-         {
-            ScriptScanner window = EditorWindow.GetWindow<ScriptScanner>("TODO Scanner");
-            window.SetMainCollection(notesEditor.CurrentNotesCollection);
-         }
-         else
-         {
-            ScriptScanner window = (ScriptScanner)EditorWindow.GetWindow(typeof(ScriptScanner), false, "TODO Scanner");
-            window.SetMainCollection(notesEditor.CurrentNotesCollection);
-         }
-      }
+      // This used to open the window, should be good to get rid of it since the data
+      // is handled in tabs and shares properties / references
+
+      //EditorGUILayout.LabelField("    Tools:", GUILayout.Width(50) );
+      //if ( GUILayout.Button("Import", GUILayout.Width(100)) )
+      //{
+      //   if ( !EditorWindow.HasOpenInstances<ScriptScanner>() )
+      //   {
+      //      ScriptScanner window = EditorWindow.GetWindow<ScriptScanner>("TODO Scanner");
+      //      window.SetMainCollection(notesEditor.CurrentNotesCollection);
+      //   }
+      //   else
+      //   {
+      //      ScriptScanner window = (ScriptScanner)EditorWindow.GetWindow(typeof(ScriptScanner), false, "TODO Scanner");
+      //      window.SetMainCollection(notesEditor.CurrentNotesCollection);
+      //   }
+      //}
 
       GUILayout.EndHorizontal();
    }
@@ -161,7 +164,7 @@ public class NotesEditorRenderer
          return;
 
       GUILayout.Label("Notes:", EditorStyles.boldLabel);
-      notesEditor.ScrollPosition = EditorGUILayout.BeginScrollView(notesEditor.ScrollPosition);
+      notesEditor.EditorScrollPosition = EditorGUILayout.BeginScrollView(notesEditor.EditorScrollPosition);
 
       for ( int i = 0; i < notesEditor.CurrentNotesCollection.notes.Count; i++ )
       {

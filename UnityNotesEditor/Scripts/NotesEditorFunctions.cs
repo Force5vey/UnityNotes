@@ -7,20 +7,20 @@ using System.Text.RegularExpressions;
 
 public class NotesEditorFunctions
 {
-   private NotesEditor editorWindow;
+   private NotesEditor notesEditor;
 
-   public NotesEditorFunctions( NotesEditor editorWindow )
+   public NotesEditorFunctions( NotesEditor notesEditor )
    {
-      this.editorWindow = editorWindow;
+      this.notesEditor = notesEditor;
 
    }
 
    // Mark the NotesCollection asset as dirty to ensure changes are saved
    public void MarkNotesCollectionDirty()
    {
-      if ( editorWindow.CurrentNotesCollection != null )
+      if ( notesEditor.CurrentNotesCollection != null )
       {
-         EditorUtility.SetDirty(editorWindow.CurrentNotesCollection);
+         EditorUtility.SetDirty(notesEditor.CurrentNotesCollection);
       }
    }
    //TODO: This is a new note I am adding .
@@ -29,7 +29,7 @@ public class NotesEditorFunctions
    /// </summary>
    public void AddNewNote()
    {
-      if ( editorWindow.CurrentNotesCollection != null )
+      if ( notesEditor.CurrentNotesCollection != null )
       {
          Note newNote = new Note
          {
@@ -37,7 +37,7 @@ public class NotesEditorFunctions
             isExpanded = true
          };
 
-         editorWindow.CurrentNotesCollection.notes.Insert(0, newNote);
+         notesEditor.CurrentNotesCollection.notes.Insert(0, newNote);
          MarkNotesCollectionDirty();
       }
    }
@@ -47,9 +47,9 @@ public class NotesEditorFunctions
    /// </summary>
    public void RemoveCompletedNotes()
    {
-      if ( editorWindow.CurrentNotesCollection != null )
+      if ( notesEditor.CurrentNotesCollection != null )
       {
-         editorWindow.CurrentNotesCollection.notes = editorWindow.CurrentNotesCollection.notes.Where(
+         notesEditor.CurrentNotesCollection.notes = notesEditor.CurrentNotesCollection.notes.Where(
             note => !note.completed).ToList();
          MarkNotesCollectionDirty();
       }
@@ -58,21 +58,21 @@ public class NotesEditorFunctions
    /// <summary>
    /// Toggle the expansion state of all notes.
    /// </summary>
-   public void ToggleAllNotes()
+   public void ToggleAllNotes(NotesCollection collectionToToggle)
    {
-      if ( editorWindow.CurrentNotesCollection != null )
+      if ( collectionToToggle != null )
       {
-         editorWindow.AllNotesExpanded = !editorWindow.AllNotesExpanded;
-         foreach ( var note in editorWindow.CurrentNotesCollection.notes )
+         notesEditor.AllNotesExpanded = !notesEditor.AllNotesExpanded;
+         foreach ( var note in collectionToToggle.notes )
          {
-            note.isExpanded = editorWindow.AllNotesExpanded;
+            note.isExpanded = notesEditor.AllNotesExpanded;
          }
       }
    }
 
    public void ApplyFilterAndSort()
    {
-      if ( editorWindow.CurrentNotesCollection == null )
+      if ( notesEditor.CurrentNotesCollection == null )
          return;
 
       IEnumerable<Note> filteredNotes = FilterNotesByPriorityCategoryAndStatus();
@@ -84,27 +84,27 @@ public class NotesEditorFunctions
       UpdateNotesCollection(filteredNotes);
 
       // Reflect changes in the editor window
-      editorWindow.Repaint();
+      notesEditor.Repaint();
    }
 
 
    private IEnumerable<Note> FilterNotesByPriorityCategoryAndStatus()
    {
-      IEnumerable<Note> filteredNotes = editorWindow.CurrentNotesCollection.notes;
+      IEnumerable<Note> filteredNotes = notesEditor.CurrentNotesCollection.notes;
 
-      if ( editorWindow.SelectedCategoryFilter.HasValue )
+      if ( notesEditor.SelectedCategoryFilter.HasValue )
       {
-         filteredNotes = filteredNotes.Where(note => note.category == editorWindow.SelectedCategoryFilter.Value);
+         filteredNotes = filteredNotes.Where(note => note.category == notesEditor.SelectedCategoryFilter.Value);
       }
 
-      if ( editorWindow.SelectedPriorityFilter.HasValue )
+      if ( notesEditor.SelectedPriorityFilter.HasValue )
       {
-         filteredNotes = filteredNotes.Where(note => note.priority == editorWindow.SelectedPriorityFilter.Value);
+         filteredNotes = filteredNotes.Where(note => note.priority == notesEditor.SelectedPriorityFilter.Value);
       }
 
-      if ( editorWindow.SelectedStatusFilter.HasValue )
+      if ( notesEditor.SelectedStatusFilter.HasValue )
       {
-         filteredNotes = filteredNotes.Where(note => note.status == editorWindow.SelectedStatusFilter.Value);
+         filteredNotes = filteredNotes.Where(note => note.status == notesEditor.SelectedStatusFilter.Value);
       }
 
       return filteredNotes;
@@ -121,13 +121,13 @@ public class NotesEditorFunctions
       {
          note.isExpanded = true; // Expand filtered notes
       }
-      var remainingNotes = editorWindow.CurrentNotesCollection.notes.Except(filteredNotesList).ToList();
+      var remainingNotes = notesEditor.CurrentNotesCollection.notes.Except(filteredNotesList).ToList();
       foreach ( var note in remainingNotes )
       {
          note.isExpanded = false; // Collapse remaining notes
       }
 
-      editorWindow.CurrentNotesCollection.notes = filteredNotesList.Concat(remainingNotes).ToList();
+      notesEditor.CurrentNotesCollection.notes = filteredNotesList.Concat(remainingNotes).ToList();
    }
 
    /// <summary>
@@ -207,12 +207,25 @@ public class NotesEditorFunctions
 
    public void LoadSelectedNotesCollection()
    {
-      if ( editorWindow.NotesCollectionPaths.Length > editorWindow.SelectedNotesCollectionIndex )
+      if ( notesEditor.NotesCollectionPaths.Length > notesEditor.SelectedNotesCollectionIndex )
       {
          string selectedPath = AssetDatabase.GUIDToAssetPath(
-             AssetDatabase.FindAssets($"t:NotesCollection", new[] { NotesEditor.CachedSettings.notesFolderPath })[editorWindow.SelectedNotesCollectionIndex]);
-         editorWindow.CurrentNotesCollection = AssetDatabase.LoadAssetAtPath<NotesCollection>(selectedPath);
+             AssetDatabase.FindAssets($"t:NotesCollection", new[] { NotesEditor.CachedSettings.notesFolderPath })[notesEditor.SelectedNotesCollectionIndex]);
+         notesEditor.CurrentNotesCollection = AssetDatabase.LoadAssetAtPath<NotesCollection>(selectedPath);
       }
-      editorWindow.UpdateNotesCollectionsList();
+      notesEditor.UpdateNotesCollectionsList();
+   }
+
+   /// <summary>
+   /// Toggle the isSelected Property of a note in passed Collection
+   /// </summary>
+   /// <param name="notesCollection">The collection to work with</param>
+   public void SetAllNotesSelected(NotesCollection notesCollection)
+   {
+      notesEditor.AllNotesSelected = !notesEditor.AllNotesSelected;
+      foreach ( var note in notesCollection.notes )
+      {
+         note.isSelected = notesEditor.AllNotesSelected;
+      }
    }
 }

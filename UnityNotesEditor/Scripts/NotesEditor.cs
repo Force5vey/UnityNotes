@@ -2,18 +2,33 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Text.RegularExpressions;
+using System;
 
 public class NotesEditor :EditorWindow
 {
    // Supporting Classes
    public NotesEditorRenderer Renderer { get; private set; }
    public NotesEditorFunctions Functions { get; private set; }
+   public ScriptScannerRenderer SSRenderer { get; private set; }
+   public ScriptScannerFunctions SSFunctions { get; private set; }
 
-   // User defined individualized settings object (public static for accessibility)
+   //Feature Sets
+   public enum EditorTab
+   {
+      Notes,
+      ScriptScanner,
+      Settings
+   }
+
+   public EditorTab CurrentTab { get; set; }
+
+   // NotesEditor Settings for user customization.
    public static NotesSettings CachedSettings { get; set; }
 
    // Editor window properties (public for accessibility by other classes)
-   public Vector2 ScrollPosition { get; set; }
+   public Vector2 EditorScrollPosition { get; set; }
    public string[] NotesCollectionPaths { get; set; }
    public int SelectedNotesCollectionIndex { get; set; }
    public string[] ScriptFilePaths { get; set; }
@@ -30,8 +45,23 @@ public class NotesEditor :EditorWindow
       }
    }
 
+   private NotesCollection _foundTaggedCommentsCollection;
+   public NotesCollection FoundTaggedCommentsCollection
+   {
+      get => _foundTaggedCommentsCollection;
+      set
+      {
+         _foundTaggedCommentsCollection = value;
+         Repaint();
+      }
+   }
+
+
    // UI state properties (public for accessibility)
    public bool AllNotesExpanded { get; set; }
+   public bool AllNotesSelected { get; set; }
+
+   //Display Filters.
    public PriorityLevel? SelectedPriorityFilter { get; set; }
    public NoteCategory? SelectedCategoryFilter { get; set; }
    public NoteStatus? SelectedStatusFilter { get; set; }
@@ -48,13 +78,21 @@ public class NotesEditor :EditorWindow
       GetWindow<NotesEditor>("Notes Editor");
    }
 
-   //TODO: NOTES: This is my tasky task.
-
+   /// <summary>
+   /// Primary Initialization that should happen once on opening.
+   /// </summary>
    private void OnEnable()
    {
       // Utilize the Tool Classes
       Renderer = new NotesEditorRenderer(this);
       Functions = new NotesEditorFunctions(this);
+      SSRenderer = new ScriptScannerRenderer(this);
+      SSFunctions = new ScriptScannerFunctions(this);
+
+      //Set current tab to defualt tab that opens
+      this.CurrentTab = EditorTab.Notes;
+
+      FoundTaggedCommentsCollection = ScriptableObject.CreateInstance<NotesCollection>();
 
       CacheNotesSettings();
       UpdateNotesCollectionsList();
@@ -68,6 +106,27 @@ public class NotesEditor :EditorWindow
       }
    }
 
+   // Fires like Update();
+   private void OnGUI()
+   {
+      // Get TabNames and Render the Tab Toolbar
+      string[] tabNames = Enum.GetNames(typeof(EditorTab));
+      CurrentTab = (EditorTab)GUILayout.Toolbar((int)CurrentTab, tabNames, GUILayout.Width(300));
+
+      switch ( CurrentTab )
+      {
+         case EditorTab.Notes:
+         Renderer.InitializeWindowRendering();
+         break;
+         case EditorTab.ScriptScanner:
+         SSRenderer.InitialzieScriptScannerRendering();
+         break;
+         case EditorTab.Settings:
+
+         break;
+      }
+   }
+
    private void OnDisable()
    {
       if ( CachedSettings != null && SelectedNotesCollectionIndex >= 0 )
@@ -76,6 +135,8 @@ public class NotesEditor :EditorWindow
          EditorUtility.SetDirty(CachedSettings);
       }
    }
+
+   #region // Initialization - OnEnable ...
 
    private void CacheNotesSettings()
    {
@@ -144,10 +205,63 @@ public class NotesEditor :EditorWindow
       }
    }
 
-   // Main GUI rendering logic
-   private void OnGUI()
+   #endregion
+
+
+   /* ------------------------------------------------------------------------------------------------------------- */
+
+
+
+
+  
+
+   
+
+ 
+
+
+
+
+ 
+
+   private void SetAllNotesExpanded( bool expanded )
    {
-      Renderer.InitializeWindowRendering();
+      foreach ( var note in FoundTaggedCommentsCollection.notes )
+      {
+         note.isExpanded = expanded;
+      }
    }
+
+
+
+   /// <summary>
+   /// Toggle the expansion state of all notes.
+   /// </summary>
+   public void ToggleAllNotes()
+   {
+      if ( FoundTaggedCommentsCollection != null )
+      {
+         AllNotesExpanded = !AllNotesExpanded;
+         foreach ( var note in FoundTaggedCommentsCollection.notes )
+         {
+            note.isExpanded = AllNotesExpanded;
+         }
+      }
+   }
+
+
+   //NotesRefactor: Won't be needed until I implement settings tab
+   private void OpenNotesSettings()
+   {
+      if ( CachedSettings != null )
+      {
+         Selection.activeObject = CachedSettings;
+      }
+      else
+      {
+         Debug.LogError("Notes settings not found.");
+      }
+   }
+
 
 }
