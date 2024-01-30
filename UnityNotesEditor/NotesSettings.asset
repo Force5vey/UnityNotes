@@ -19,5 +19,4 @@ MonoBehaviour:
   highPriorityIcon: {fileID: 2800000, guid: 0de67fa4267fc5d4fa3fdb2ca03ffd75, type: 3}
   criticalPriorityIcon: {fileID: 2800000, guid: 24712ec703f2d2144bccf69611b1c449, type: 3}
   commentTags:
-  - NOTE
-  - IMPORT
+  - //TODO

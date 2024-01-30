@@ -6,7 +6,7 @@ using System.Linq;
 
 public class NotesEditorRenderer
 {
-   private NotesEditorWindow editorWindow;
+   private NotesEditor notesEditor;
 
    //Layout settings
    private float labelWidth = 75f;
@@ -21,9 +21,9 @@ public class NotesEditorRenderer
 
 
 
-   public NotesEditorRenderer( NotesEditorWindow editorWindow )
+   public NotesEditorRenderer( NotesEditor notesEditor )
    {
-      this.editorWindow = editorWindow;
+      this.notesEditor = notesEditor;
    }
 
    #region //Main Window Rendering
@@ -45,27 +45,29 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
 
-      if ( editorWindow.NotesCollectionPaths != null && editorWindow.NotesCollectionPaths.Length > 0 )
+      if ( notesEditor.NotesCollectionPaths != null && notesEditor.NotesCollectionPaths.Length > 0 )
       {
          EditorGUILayout.LabelField("Note", GUILayout.Width(labelWidth));
-         editorWindow.SelectedNotesCollectionIndex = EditorGUILayout.Popup(
-             editorWindow.SelectedNotesCollectionIndex,
-             editorWindow.NotesCollectionPaths);
+         //notesEditor.SelectedNotesCollectionIndex = EditorGUILayout.Popup(
+         //    notesEditor.SelectedNotesCollectionIndex,
+         //    notesEditor.NotesCollectionPaths);
+      }
+
+      int newIndex = EditorGUILayout.Popup(notesEditor.SelectedNotesCollectionIndex, notesEditor.NotesCollectionPaths);
+
+      if(newIndex != notesEditor.SelectedNotesCollectionIndex)
+      {
+         notesEditor.SelectedNotesCollectionIndex = newIndex;
+        notesEditor.Functions.LoadSelectedNotesCollection();
       }
 
       if ( GUILayout.Button("Refresh", GUILayout.Width(75)) )
       {
-         if ( editorWindow.NotesCollectionPaths.Length > editorWindow.SelectedNotesCollectionIndex )
-         {
-            string selectedPath = AssetDatabase.GUIDToAssetPath(
-                AssetDatabase.FindAssets($"t:NotesCollection", new[] { NotesEditorWindow.CachedSettings.notesFolderPath })[editorWindow.SelectedNotesCollectionIndex]);
-            editorWindow.CurrentNotesCollection = AssetDatabase.LoadAssetAtPath<NotesCollection>(selectedPath);
-         }
-         editorWindow.UpdateNotesCollectionsList();
+         notesEditor.Functions.LoadSelectedNotesCollection();
       }
 
-      editorWindow.CurrentNotesCollection = (NotesCollection)EditorGUILayout.ObjectField(
-          editorWindow.CurrentNotesCollection,
+      notesEditor.CurrentNotesCollection = (NotesCollection)EditorGUILayout.ObjectField(
+          notesEditor.CurrentNotesCollection,
           typeof(NotesCollection), false);
 
       GUILayout.EndHorizontal();
@@ -78,33 +80,34 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
 
-      if ( GUILayout.Button(editorWindow.AllNotesExpanded ? "Collapse" : "Expand", GUILayout.Width(75)) )
+      if ( GUILayout.Button(notesEditor.AllNotesExpanded ? "Collapse" : "Expand", GUILayout.Width(75)) )
       {
-         editorWindow.Functions.ToggleAllNotes();
+         notesEditor.Functions.ToggleAllNotes();
       }
 
       if ( GUILayout.Button("New Note", GUILayout.Width(75)) )
       {
-         editorWindow.Functions.AddNewNote();
+         notesEditor.Functions.AddNewNote();
       }
 
 
       if ( GUILayout.Button(new GUIContent("Delete", "Delete Checked / Completed Notes"), GUILayout.Width(75)) )
       {
-         editorWindow.Functions.RemoveCompletedNotes();
+         notesEditor.Functions.RemoveCompletedNotes();
       }
 
+      EditorGUILayout.LabelField("    Tools:", GUILayout.Width(50) );
       if ( GUILayout.Button("Import", GUILayout.Width(100)) )
       {
-         if ( !EditorWindow.HasOpenInstances<TodoScannerWindow>() )
+         if ( !EditorWindow.HasOpenInstances<ScriptScanner>() )
          {
-            TodoScannerWindow window = EditorWindow.GetWindow<TodoScannerWindow>("TODO Scanner");
-            window.SetMainCollection(editorWindow.CurrentNotesCollection);
+            ScriptScanner window = EditorWindow.GetWindow<ScriptScanner>("TODO Scanner");
+            window.SetMainCollection(notesEditor.CurrentNotesCollection);
          }
          else
          {
-            TodoScannerWindow window = (TodoScannerWindow)EditorWindow.GetWindow(typeof(TodoScannerWindow), false, "TODO Scanner");
-            window.SetMainCollection(editorWindow.CurrentNotesCollection);
+            ScriptScanner window = (ScriptScanner)EditorWindow.GetWindow(typeof(ScriptScanner), false, "TODO Scanner");
+            window.SetMainCollection(notesEditor.CurrentNotesCollection);
          }
       }
 
@@ -120,29 +123,29 @@ public class NotesEditorRenderer
       if ( GUILayout.Button(new GUIContent("Filter:", "Apply Filter based on selected Priority, Category, and Status"
          ), GUILayout.Width(75)) )
       {
-         editorWindow.Functions.ApplyFilterAndSort();
+         notesEditor.Functions.ApplyFilterAndSort();
       }
 
       // Priority Filter
       EditorGUILayout.LabelField("Pri", GUILayout.MaxWidth(filterLabelWidth));
       var priorities = Enum.GetNames(typeof(PriorityLevel)).AsEnumerable().Prepend("All").ToArray();
-      int selectedPriorityIndex = editorWindow.SelectedPriorityFilter.HasValue ? (int)editorWindow.SelectedPriorityFilter.Value + 1 : 0;
+      int selectedPriorityIndex = notesEditor.SelectedPriorityFilter.HasValue ? (int)notesEditor.SelectedPriorityFilter.Value + 1 : 0;
       selectedPriorityIndex = EditorGUILayout.Popup(selectedPriorityIndex, priorities, GUILayout.MaxWidth(enumWidth));
-      editorWindow.SelectedPriorityFilter = selectedPriorityIndex > 0 ? (PriorityLevel?)(selectedPriorityIndex - 1) : null;
+      notesEditor.SelectedPriorityFilter = selectedPriorityIndex > 0 ? (PriorityLevel?)(selectedPriorityIndex - 1) : null;
 
       //Category Filter
       EditorGUILayout.LabelField("Cat", GUILayout.MaxWidth(filterLabelWidth));
       var categories = Enum.GetNames(typeof(NoteCategory)).AsEnumerable().Prepend("All").ToArray();
-      int selectedCategoryIndex = editorWindow.SelectedCategoryFilter.HasValue ? (int)editorWindow.SelectedCategoryFilter.Value + 1 : 0;
+      int selectedCategoryIndex = notesEditor.SelectedCategoryFilter.HasValue ? (int)notesEditor.SelectedCategoryFilter.Value + 1 : 0;
       selectedCategoryIndex = EditorGUILayout.Popup(selectedCategoryIndex, categories, GUILayout.MaxWidth(enumWidth));
-      editorWindow.SelectedCategoryFilter = selectedCategoryIndex > 0 ? (NoteCategory?)(selectedCategoryIndex - 1) : null;
+      notesEditor.SelectedCategoryFilter = selectedCategoryIndex > 0 ? (NoteCategory?)(selectedCategoryIndex - 1) : null;
 
       //status
       EditorGUILayout.LabelField("Stat", GUILayout.MaxWidth(filterLabelWidth));
       var statuses = Enum.GetNames(typeof(NoteStatus)).AsEnumerable().Prepend("All").ToArray();
-      int selectedStatusIndex = editorWindow.SelectedStatusFilter.HasValue ? (int)editorWindow.SelectedStatusFilter.Value + 1 : 0;
+      int selectedStatusIndex = notesEditor.SelectedStatusFilter.HasValue ? (int)notesEditor.SelectedStatusFilter.Value + 1 : 0;
       selectedStatusIndex = EditorGUILayout.Popup(selectedStatusIndex, statuses, GUILayout.MaxWidth(enumWidth));
-      editorWindow.SelectedStatusFilter = selectedStatusIndex > 0 ? (NoteStatus?)(selectedStatusIndex - 1) : null;
+      notesEditor.SelectedStatusFilter = selectedStatusIndex > 0 ? (NoteStatus?)(selectedStatusIndex - 1) : null;
 
       GUILayout.EndHorizontal();
    }
@@ -154,15 +157,15 @@ public class NotesEditorRenderer
    // Render the list of notes with foldouts and detailed editing fields
    public void RenderNotesList()
    {
-      if ( editorWindow.CurrentNotesCollection == null )
+      if ( notesEditor.CurrentNotesCollection == null )
          return;
 
       GUILayout.Label("Notes:", EditorStyles.boldLabel);
-      editorWindow.ScrollPosition = EditorGUILayout.BeginScrollView(editorWindow.ScrollPosition);
+      notesEditor.ScrollPosition = EditorGUILayout.BeginScrollView(notesEditor.ScrollPosition);
 
-      for ( int i = 0; i < editorWindow.CurrentNotesCollection.notes.Count; i++ )
+      for ( int i = 0; i < notesEditor.CurrentNotesCollection.notes.Count; i++ )
       {
-         RenderNoteItem(editorWindow.CurrentNotesCollection.notes[i]);
+         RenderNoteItem(notesEditor.CurrentNotesCollection.notes[i]);
       }
 
       EditorGUILayout.EndScrollView();
@@ -194,7 +197,7 @@ public class NotesEditorRenderer
       if ( completed != note.completed )
       {
          note.completed = completed;
-         editorWindow.Functions.MarkNotesCollectionDirty();
+         notesEditor.Functions.MarkNotesCollectionDirty();
       }
    }
 
@@ -225,7 +228,7 @@ public class NotesEditorRenderer
    {
       float rectWidth = categoryBarWidth;
       Rect rect = GUILayoutUtility.GetRect(rectWidth, categoryBarHeight, GUILayout.ExpandWidth(false));
-      EditorGUI.DrawRect(rect, editorWindow.CategoryColors[note.category]);
+      EditorGUI.DrawRect(rect, notesEditor.CategoryColors[note.category]);
       GUILayout.Space(5);
    }
 
@@ -270,7 +273,7 @@ public class NotesEditorRenderer
 
       EditorGUILayout.LabelField("Priority", GUILayout.Width(labelWidth));
       note.priority = (PriorityLevel)EditorGUILayout.EnumPopup(note.priority);
-      GUILayout.Label(editorWindow.PriorityIcons[note.priority], GUILayout.Width(priorityIconWidth), GUILayout.Height(priorityIconHeight));
+      GUILayout.Label(notesEditor.PriorityIcons[note.priority], GUILayout.Width(priorityIconWidth), GUILayout.Height(priorityIconHeight));
 
       GUILayout.EndHorizontal();
    }
@@ -282,22 +285,22 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
 
-      if ( editorWindow.ScriptFilePaths == null )
+      if ( notesEditor.ScriptFilePaths == null )
       {
-         editorWindow.ScriptFilePaths = editorWindow.Functions.GetAllScriptFiles();
+         notesEditor.ScriptFilePaths = notesEditor.Functions.GetAllScriptFiles();
       }
-      int selectedIndex = Array.IndexOf(editorWindow.ScriptFilePaths, note.fileName);
+      int selectedIndex = Array.IndexOf(notesEditor.ScriptFilePaths, note.fileName);
       EditorGUILayout.LabelField("File", GUILayout.Width(labelWidth));
 
       if ( GUILayout.Button("Open", GUILayout.Width(100)) )
       {
-         editorWindow.Functions.OpenScriptFile(note);
+         notesEditor.Functions.OpenScriptFile(note);
       }
 
-      int newSelectedIndex = EditorGUILayout.Popup(selectedIndex, editorWindow.ScriptFilePaths, GUILayout.Width(75));
-      if ( newSelectedIndex >= 0 && newSelectedIndex < editorWindow.ScriptFilePaths.Length )
+      int newSelectedIndex = EditorGUILayout.Popup(selectedIndex, notesEditor.ScriptFilePaths, GUILayout.Width(75));
+      if ( newSelectedIndex >= 0 && newSelectedIndex < notesEditor.ScriptFilePaths.Length )
       {
-         note.fileName = editorWindow.ScriptFilePaths[newSelectedIndex];
+         note.fileName = notesEditor.ScriptFilePaths[newSelectedIndex];
       }
 
       // Drag and drop field - CS File
@@ -307,7 +310,7 @@ public class NotesEditorRenderer
       if ( droppedObject != null )
       {
          string droppedObjectPath = AssetDatabase.GetAssetPath(droppedObject);
-         if ( droppedObjectPath.EndsWith(".cs") && editorWindow.ScriptFilePaths.Contains(droppedObjectPath) )
+         if ( droppedObjectPath.EndsWith(".cs") && notesEditor.ScriptFilePaths.Contains(droppedObjectPath) )
          {
             note.fileName = droppedObjectPath;
          }
@@ -331,7 +334,7 @@ public class NotesEditorRenderer
 
       if ( GUILayout.Button("Open File(s)", GUILayout.Width(100)) )
       {
-         editorWindow.Functions.OpenLinkedScripts(note);
+         notesEditor.Functions.OpenLinkedScripts(note);
       }
 
       EditorGUI.BeginChangeCheck();
@@ -342,7 +345,7 @@ public class NotesEditorRenderer
       if ( EditorGUI.EndChangeCheck() )
       {
          note.linkedGameObject = linkedGameObject;
-         editorWindow.Functions.UpdateLinkedScriptPaths(note, linkedGameObject);
+         notesEditor.Functions.UpdateLinkedScriptPaths(note, linkedGameObject);
       }
 
       // Display a dropdown list of the linked script paths

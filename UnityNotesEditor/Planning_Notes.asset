@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7911ff0dc1011447a2df0d34423423c, type: 3}
-  m_Name: 28_01_PSG_Notes
+  m_Name: Planning_Notes
   m_EditorClassIdentifier: 
   notes: []

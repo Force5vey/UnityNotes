@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 
 public class NotesEditorFunctions
 {
-   private NotesEditorWindow editorWindow;
+   private NotesEditor editorWindow;
 
-   public NotesEditorFunctions( NotesEditorWindow editorWindow )
+   public NotesEditorFunctions( NotesEditor editorWindow )
    {
       this.editorWindow = editorWindow;
 
@@ -23,7 +23,7 @@ public class NotesEditorFunctions
          EditorUtility.SetDirty(editorWindow.CurrentNotesCollection);
       }
    }
-
+   //TODO: This is a new note I am adding .
    /// <summary>
    /// Add a new note to the current collection.
    /// </summary>
@@ -31,7 +31,13 @@ public class NotesEditorFunctions
    {
       if ( editorWindow.CurrentNotesCollection != null )
       {
-         editorWindow.CurrentNotesCollection.notes.Add(new Note { creationDate = System.DateTime.Now.ToString("dd_MMM - HH:mm") });
+         Note newNote = new Note
+         {
+            creationDate = System.DateTime.Now.ToString("dd_MMM - HH:mm"),
+            isExpanded = true
+         };
+
+         editorWindow.CurrentNotesCollection.notes.Insert(0, newNote);
          MarkNotesCollectionDirty();
       }
    }
@@ -199,5 +205,14 @@ public class NotesEditorFunctions
       MarkNotesCollectionDirty(); // Mark the collection as dirty to save changes
    }
 
-
+   public void LoadSelectedNotesCollection()
+   {
+      if ( editorWindow.NotesCollectionPaths.Length > editorWindow.SelectedNotesCollectionIndex )
+      {
+         string selectedPath = AssetDatabase.GUIDToAssetPath(
+             AssetDatabase.FindAssets($"t:NotesCollection", new[] { NotesEditor.CachedSettings.notesFolderPath })[editorWindow.SelectedNotesCollectionIndex]);
+         editorWindow.CurrentNotesCollection = AssetDatabase.LoadAssetAtPath<NotesCollection>(selectedPath);
+      }
+      editorWindow.UpdateNotesCollectionsList();
+   }
 }

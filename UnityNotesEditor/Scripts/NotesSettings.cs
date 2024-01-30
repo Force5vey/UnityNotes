@@ -5,10 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NotesSettings", menuName = "Notes/Settings")]
 public class NotesSettings :ScriptableObject
 {
-   [Tooltip("Folder Path in Assets directory for Notes Collections.[Scriptable Object]")]
+   [Tooltip("Working directory. Use for Notes Collections Location.")]
    public string notesFolderPath = "Assets/Editor/UnityNotesEditor/";
 
-   [Tooltip("Project Name to be used in Notes Collection file name.")]
+   [Tooltip("Custom Project Name. Blank uses Build Settings")]
    public string projectName;
 
    [Tooltip("Icon for Low Priority")]
@@ -25,6 +25,11 @@ public class NotesSettings :ScriptableObject
 
    [Tooltip("One per Element, Tool scans for any instance of the tag, and pulls that line. \n Avoid escape and special characters.")]
    public List<string> commentTags = new List<string>() { "//TODO", "//UNITY NOTE" };
+
+   [Tooltip("Stores the available NotesCollections to reference between sessions.")]
+   public List<string> allNotesCollectionPaths;
+   [Tooltip("Used to track last opened NotesCollection; you can change it if you want, it opens this index.")]
+   public int currentCollectionIndex;
 
 }
 

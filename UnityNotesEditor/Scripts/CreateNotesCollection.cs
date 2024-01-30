@@ -62,7 +62,6 @@ public static class CreateNotesCollection
          EditorUtility.SetDirty(settings);
       }
 
-      string date = System.DateTime.Now.ToString("dd_MM");
-      return $"{date}_{projectName}_Notes";
+      return $"{projectName}_Notes";
    }
 }
