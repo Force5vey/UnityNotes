@@ -5,6 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Text.RegularExpressions;
 using System;
+using Unity.VisualScripting;
 
 public class NotesEditor :EditorWindow
 {
@@ -27,13 +28,16 @@ public class NotesEditor :EditorWindow
    // NotesEditor Settings for user customization.
    public static NotesSettings CachedSettings { get; set; }
 
-   // Editor window properties (public for accessibility by other classes)
+   // Editor Tab properties
    public Vector2 EditorScrollPosition { get; set; }
    public string[] NotesCollectionPaths { get; set; }
    public int SelectedNotesCollectionIndex { get; set; }
    public string[] ScriptFilePaths { get; set; }
 
-   // Collection being edited (as a property to update the UI immediately)
+   // Script Scanner Tab properties
+   public Vector2 ScriptScannerScrollPosition { get; set; }
+
+   // Collection being edited
    private NotesCollection _currentNotesCollection;
    public NotesCollection CurrentNotesCollection
    {
@@ -56,7 +60,6 @@ public class NotesEditor :EditorWindow
       }
    }
 
-
    // UI state properties (public for accessibility)
    public bool AllNotesExpanded { get; set; }
    public bool AllNotesSelected { get; set; }
@@ -72,7 +75,7 @@ public class NotesEditor :EditorWindow
 
 
    // Initialization of the window and loading of resources
-   [MenuItem("Tools/Notes Editor (Window)")]
+   [MenuItem("Window/Notes Editor")]
    public static void ShowWindow()
    {
       GetWindow<NotesEditor>("Notes Editor");
@@ -96,7 +99,7 @@ public class NotesEditor :EditorWindow
 
       CacheNotesSettings();
       UpdateNotesCollectionsList();
-      InitializeCategoryColors();
+      CategoryColors = StyleKit.InitializeCategoryColors();
       InitializePriorityIcons();
 
       if ( CachedSettings != null && CachedSettings.currentCollectionIndex >= 0 && CachedSettings.currentCollectionIndex < NotesCollectionPaths.Length )
@@ -106,25 +109,52 @@ public class NotesEditor :EditorWindow
       }
    }
 
-   // Fires like Update();
    private void OnGUI()
    {
-      // Get TabNames and Render the Tab Toolbar
-      string[] tabNames = Enum.GetNames(typeof(EditorTab));
-      CurrentTab = (EditorTab)GUILayout.Toolbar((int)CurrentTab, tabNames, GUILayout.Width(300));
+      //RenderTabButtonRow();
 
+      // Get TabNames
+      string[] tabNames = Enum.GetNames(typeof(EditorTab));
+      GUILayout.Space(5);
+      Rect rect = GUILayoutUtility.GetRect(1, StyleKit.BarHeightSmall, GUILayout.ExpandWidth(true));
+      EditorGUI.DrawRect(rect, Color.black);
+
+
+      GUILayout.BeginHorizontal();
+
+      for ( int i = 0; i < tabNames.Length; i++ )
+      {
+         GUIStyle buttonStyle = (CurrentTab == (EditorTab)i) ? StyleKit.MainToolbarButtonSelected : StyleKit.MainToolbarButton;
+         if ( GUILayout.Button(tabNames[i], buttonStyle, GUILayout.Width(StyleKit.ButtonWidthLarge)) )
+         {
+            CurrentTab = (EditorTab)i;
+         }
+      }
+      GUILayout.EndHorizontal();
+
+      //rect = GUILayoutUtility.GetRect(1, StyleKit.BarHeightMedium, GUILayout.ExpandWidth(true));
+      //EditorGUI.DrawRect(rect, Color.black);
+      GUILayout.Space(5);
+
+      // Handle the rendering based on the current tab
       switch ( CurrentTab )
       {
          case EditorTab.Notes:
          Renderer.InitializeWindowRendering();
          break;
          case EditorTab.ScriptScanner:
-         SSRenderer.InitialzieScriptScannerRendering();
+         SSRenderer.InitializeScriptScannerRendering();
          break;
          case EditorTab.Settings:
 
+         // Render Settings Tab Content
          break;
       }
+
+      //Required (as of now) for mouse hover effects.
+      Repaint();
+
+
    }
 
    private void OnDisable()
@@ -153,6 +183,7 @@ public class NotesEditor :EditorWindow
          if ( CachedSettings != null )
             break;
       }
+      StyleKit.Initialize(CachedSettings.notesFolderPath);
    }
 
    public void UpdateNotesCollectionsList()
@@ -172,67 +203,19 @@ public class NotesEditor :EditorWindow
       EditorUtility.SetDirty(CachedSettings);
    }
 
-
-
-   // Initialize the category color mapping
-   private void InitializeCategoryColors()
-   {
-      CategoryColors = new Dictionary<NoteCategory, Color>()
-        {
-            { NoteCategory.TODO, Color.cyan },
-            { NoteCategory.Bug, Color.red },
-            { NoteCategory.Feature, Color.green },
-            { NoteCategory.Improvement, Color.yellow },
-            { NoteCategory.Design, Color.magenta },
-            { NoteCategory.Testing, Color.grey },
-            { NoteCategory.Documentation, Color.blue },
-            { NoteCategory.Other, Color.white }
-        };
-   }
-
    // Load priority level icons from assets
    private void InitializePriorityIcons()
    {
-      if ( CachedSettings != null )
-      {
-         PriorityIcons = new Dictionary<PriorityLevel, Texture2D>()
+      PriorityIcons = new Dictionary<PriorityLevel, Texture2D>()
         {
             {PriorityLevel.Low, (CachedSettings.lowPriorityIcon) },
             { PriorityLevel.Medium, (CachedSettings.mediumPriorityIcon) },
             { PriorityLevel.High, (CachedSettings.highPriorityIcon) },
             { PriorityLevel.Critical, (CachedSettings.criticalPriorityIcon) }
         };
-      }
    }
 
    #endregion
-
-
-   /* ------------------------------------------------------------------------------------------------------------- */
-
-
-
-
-  
-
-   
-
- 
-
-
-
-
- 
-
-   private void SetAllNotesExpanded( bool expanded )
-   {
-      foreach ( var note in FoundTaggedCommentsCollection.notes )
-      {
-         note.isExpanded = expanded;
-      }
-   }
-
-
 
    /// <summary>
    /// Toggle the expansion state of all notes.
@@ -249,19 +232,29 @@ public class NotesEditor :EditorWindow
       }
    }
 
-
-   //NotesRefactor: Won't be needed until I implement settings tab
-   private void OpenNotesSettings()
+   private void RenderTabButtonRow()
    {
-      if ( CachedSettings != null )
-      {
-         Selection.activeObject = CachedSettings;
-      }
-      else
-      {
-         Debug.LogError("Notes settings not found.");
-      }
-   }
+      // Get TabNames
+      string[] tabNames = Enum.GetNames(typeof(EditorTab));
+      GUILayout.Space(5);
+      Rect rect = GUILayoutUtility.GetRect(1, StyleKit.BarHeightSmall, GUILayout.ExpandWidth(true));
+      EditorGUI.DrawRect(rect, Color.black);
 
+
+      GUILayout.BeginHorizontal();
+      for ( int i = 0; i < tabNames.Length; i++ )
+      {
+         GUIStyle buttonStyle = (CurrentTab == (EditorTab)i) ? StyleKit.MainToolbarButtonSelected : StyleKit.MainToolbarButton;
+         if ( GUILayout.Button(tabNames[i], StyleKit.MainToolbarButton, GUILayout.Width(StyleKit.ButtonWidthLarge)) )
+         {
+            CurrentTab = (EditorTab)i;
+         }
+      }
+      GUILayout.EndHorizontal();
+
+      //rect = GUILayoutUtility.GetRect(1, StyleKit.BarHeightMedium, GUILayout.ExpandWidth(true));
+      //EditorGUI.DrawRect(rect, Color.black);
+      GUILayout.Space(5);
+   }
 
 }

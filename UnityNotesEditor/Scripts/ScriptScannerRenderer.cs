@@ -14,7 +14,7 @@ public class ScriptScannerRenderer
       this.notesEditor = notesEditor;
    }
 
-   public void InitialzieScriptScannerRendering()
+   public void InitializeScriptScannerRendering()
    {
       RenderTopBar();
       RenderControlBar();

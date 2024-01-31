@@ -8,16 +8,7 @@ public class NotesEditorRenderer
 {
    private NotesEditor notesEditor;
 
-   //Layout settings
-   private float labelWidth = 75f;
-   private float filterLabelWidth = 40;
-   private float enumWidth = 75f;
 
-   private float categoryBarWidth = 150f;
-   private float categoryBarHeight = 2;
-
-   private float priorityIconWidth = 30f;
-   private float priorityIconHeight = 20;
 
 
 
@@ -38,30 +29,22 @@ public class NotesEditorRenderer
 
    public void RenderNotesCollection()
    {
-      GUILayout.Label("Notes Collection", EditorStyles.boldLabel);
+      GUILayout.Label("Notes Collection", StyleKit.HeaderTitleLabel);
    }
 
    public void RenderNoteSelectionRow()
    {
       GUILayout.BeginHorizontal();
 
-      if ( notesEditor.NotesCollectionPaths != null && notesEditor.NotesCollectionPaths.Length > 0 )
-      {
-         EditorGUILayout.LabelField("Note", GUILayout.Width(labelWidth));
-         //notesEditor.SelectedNotesCollectionIndex = EditorGUILayout.Popup(
-         //    notesEditor.SelectedNotesCollectionIndex,
-         //    notesEditor.NotesCollectionPaths);
-      }
-
       int newIndex = EditorGUILayout.Popup(notesEditor.SelectedNotesCollectionIndex, notesEditor.NotesCollectionPaths);
 
-      if(newIndex != notesEditor.SelectedNotesCollectionIndex)
+      if ( newIndex != notesEditor.SelectedNotesCollectionIndex )
       {
          notesEditor.SelectedNotesCollectionIndex = newIndex;
-        notesEditor.Functions.LoadSelectedNotesCollection();
+         notesEditor.Functions.LoadSelectedNotesCollection();
       }
 
-      if ( GUILayout.Button("Refresh", GUILayout.Width(75)) )
+      if ( GUILayout.Button("Refresh", GUILayout.Width(StyleKit.ButtonWidthMedium)) )
       {
          notesEditor.Functions.LoadSelectedNotesCollection();
       }
@@ -80,40 +63,25 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
 
-      if ( GUILayout.Button(notesEditor.AllNotesExpanded ? "Collapse" : "Expand", GUILayout.Width(75)) )
+      //TODO: This ends up being called on everyt OnGUI cycle, if things get performance intensive
+      //tag this for changing to event, or making two buttons to avoid the iteration through notes collections every update.
+      bool anyNoteExpanded = notesEditor.Functions.CheckIfAnyNoteIsExpanded(notesEditor.CurrentNotesCollection);
+
+      if ( GUILayout.Button(anyNoteExpanded ? "Collapse" : "Expand", GUILayout.Width(StyleKit.ButtonWidthMedium)) )
       {
          notesEditor.Functions.ToggleAllNotes(notesEditor.CurrentNotesCollection);
       }
 
-      if ( GUILayout.Button("New Note", GUILayout.Width(75)) )
+      if ( GUILayout.Button("New Note", GUILayout.Width(StyleKit.ButtonWidthMedium)) )
       {
          notesEditor.Functions.AddNewNote();
       }
 
 
-      if ( GUILayout.Button(new GUIContent("Delete", "Delete Checked / Completed Notes"), GUILayout.Width(75)) )
+      if ( GUILayout.Button(new GUIContent("Delete", "Delete Checked / Completed Notes"), GUILayout.Width(StyleKit.ButtonWidthMedium)) )
       {
          notesEditor.Functions.RemoveCompletedNotes();
       }
-
-      // This used to open the window, should be good to get rid of it since the data
-      // is handled in tabs and shares properties / references
-
-      //EditorGUILayout.LabelField("    Tools:", GUILayout.Width(50) );
-      //if ( GUILayout.Button("Import", GUILayout.Width(100)) )
-      //{
-      //   if ( !EditorWindow.HasOpenInstances<ScriptScanner>() )
-      //   {
-      //      ScriptScanner window = EditorWindow.GetWindow<ScriptScanner>("TODO Scanner");
-      //      window.SetMainCollection(notesEditor.CurrentNotesCollection);
-      //   }
-      //   else
-      //   {
-      //      ScriptScanner window = (ScriptScanner)EditorWindow.GetWindow(typeof(ScriptScanner), false, "TODO Scanner");
-      //      window.SetMainCollection(notesEditor.CurrentNotesCollection);
-      //   }
-      //}
-
       GUILayout.EndHorizontal();
    }
 
@@ -124,30 +92,30 @@ public class NotesEditorRenderer
       GUILayout.BeginHorizontal();
 
       if ( GUILayout.Button(new GUIContent("Filter:", "Apply Filter based on selected Priority, Category, and Status"
-         ), GUILayout.Width(75)) )
+         ), GUILayout.Width(StyleKit.ButtonWidthMedium)) )
       {
          notesEditor.Functions.ApplyFilterAndSort();
       }
 
       // Priority Filter
-      EditorGUILayout.LabelField("Pri", GUILayout.MaxWidth(filterLabelWidth));
+      EditorGUILayout.LabelField("Pri", GUILayout.MaxWidth(StyleKit.LabelWidthSmall));
       var priorities = Enum.GetNames(typeof(PriorityLevel)).AsEnumerable().Prepend("All").ToArray();
       int selectedPriorityIndex = notesEditor.SelectedPriorityFilter.HasValue ? (int)notesEditor.SelectedPriorityFilter.Value + 1 : 0;
-      selectedPriorityIndex = EditorGUILayout.Popup(selectedPriorityIndex, priorities, GUILayout.MaxWidth(enumWidth));
+      selectedPriorityIndex = EditorGUILayout.Popup(selectedPriorityIndex, priorities, GUILayout.MaxWidth(StyleKit.enumWidthMedium));
       notesEditor.SelectedPriorityFilter = selectedPriorityIndex > 0 ? (PriorityLevel?)(selectedPriorityIndex - 1) : null;
 
       //Category Filter
-      EditorGUILayout.LabelField("Cat", GUILayout.MaxWidth(filterLabelWidth));
+      EditorGUILayout.LabelField("Cat", GUILayout.MaxWidth(StyleKit.LabelWidthSmall));
       var categories = Enum.GetNames(typeof(NoteCategory)).AsEnumerable().Prepend("All").ToArray();
       int selectedCategoryIndex = notesEditor.SelectedCategoryFilter.HasValue ? (int)notesEditor.SelectedCategoryFilter.Value + 1 : 0;
-      selectedCategoryIndex = EditorGUILayout.Popup(selectedCategoryIndex, categories, GUILayout.MaxWidth(enumWidth));
+      selectedCategoryIndex = EditorGUILayout.Popup(selectedCategoryIndex, categories, GUILayout.MaxWidth(StyleKit.enumWidthMedium));
       notesEditor.SelectedCategoryFilter = selectedCategoryIndex > 0 ? (NoteCategory?)(selectedCategoryIndex - 1) : null;
 
       //status
-      EditorGUILayout.LabelField("Stat", GUILayout.MaxWidth(filterLabelWidth));
+      EditorGUILayout.LabelField("Stat", GUILayout.MaxWidth(StyleKit.LabelWidthSmall));
       var statuses = Enum.GetNames(typeof(NoteStatus)).AsEnumerable().Prepend("All").ToArray();
       int selectedStatusIndex = notesEditor.SelectedStatusFilter.HasValue ? (int)notesEditor.SelectedStatusFilter.Value + 1 : 0;
-      selectedStatusIndex = EditorGUILayout.Popup(selectedStatusIndex, statuses, GUILayout.MaxWidth(enumWidth));
+      selectedStatusIndex = EditorGUILayout.Popup(selectedStatusIndex, statuses, GUILayout.MaxWidth(StyleKit.enumWidthMedium));
       notesEditor.SelectedStatusFilter = selectedStatusIndex > 0 ? (NoteStatus?)(selectedStatusIndex - 1) : null;
 
       GUILayout.EndHorizontal();
@@ -229,8 +197,7 @@ public class NotesEditorRenderer
    // Render the category color bar for a note
    private void RenderNoteCategoryColor( Note note )
    {
-      float rectWidth = categoryBarWidth;
-      Rect rect = GUILayoutUtility.GetRect(rectWidth, categoryBarHeight, GUILayout.ExpandWidth(false));
+      Rect rect = GUILayoutUtility.GetRect(StyleKit.BarWidthMedium, StyleKit.BarHeightMedium, GUILayout.ExpandWidth(false));
       EditorGUI.DrawRect(rect, notesEditor.CategoryColors[note.category]);
       GUILayout.Space(5);
    }
@@ -242,8 +209,8 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
 
-      EditorGUILayout.LabelField("Title", GUILayout.Width(labelWidth));
-      note.title = EditorGUILayout.TextField(note.title);
+      EditorGUILayout.LabelField("Title", GUILayout.Width(StyleKit.LabelWidthMedium));
+      note.title = EditorGUILayout.TextField(note.title, StyleKit.NoteItemLabel);
 
       GUILayout.EndHorizontal();
    }
@@ -255,10 +222,10 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
 
-      EditorGUILayout.LabelField("Category", GUILayout.Width(labelWidth));
+      EditorGUILayout.LabelField("Category", GUILayout.Width(StyleKit.LabelWidthMedium));
       note.category = (NoteCategory)EditorGUILayout.EnumPopup(note.category);
 
-      EditorGUILayout.LabelField("Date", GUILayout.Width(50));
+      EditorGUILayout.LabelField("Date", GUILayout.Width(StyleKit.LabelWidthMedium));
       note.creationDate = EditorGUILayout.TextField(note.creationDate);
 
       GUILayout.EndHorizontal();
@@ -271,12 +238,12 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
 
-      EditorGUILayout.LabelField("Status", GUILayout.Width(labelWidth));
+      EditorGUILayout.LabelField("Status", GUILayout.Width(StyleKit.LabelWidthMedium));
       note.status = (NoteStatus)EditorGUILayout.EnumPopup(note.status);
 
-      EditorGUILayout.LabelField("Priority", GUILayout.Width(labelWidth));
+      EditorGUILayout.LabelField("Priority", GUILayout.Width(StyleKit.LabelWidthMedium));
       note.priority = (PriorityLevel)EditorGUILayout.EnumPopup(note.priority);
-      GUILayout.Label(notesEditor.PriorityIcons[note.priority], GUILayout.Width(priorityIconWidth), GUILayout.Height(priorityIconHeight));
+      GUILayout.Label(notesEditor.PriorityIcons[note.priority], GUILayout.Width(StyleKit.IconWidthSmall), GUILayout.Height(StyleKit.IconHeightSmall));
 
       GUILayout.EndHorizontal();
    }
@@ -293,14 +260,14 @@ public class NotesEditorRenderer
          notesEditor.ScriptFilePaths = notesEditor.Functions.GetAllScriptFiles();
       }
       int selectedIndex = Array.IndexOf(notesEditor.ScriptFilePaths, note.fileName);
-      EditorGUILayout.LabelField("File", GUILayout.Width(labelWidth));
+      EditorGUILayout.LabelField("File", GUILayout.Width(StyleKit.LabelWidthMedium));
 
       if ( GUILayout.Button("Open", GUILayout.Width(100)) )
       {
          notesEditor.Functions.OpenScriptFile(note);
       }
 
-      int newSelectedIndex = EditorGUILayout.Popup(selectedIndex, notesEditor.ScriptFilePaths, GUILayout.Width(75));
+      int newSelectedIndex = EditorGUILayout.Popup(selectedIndex, notesEditor.ScriptFilePaths, GUILayout.Width(StyleKit.enumWidthMedium));
       if ( newSelectedIndex >= 0 && newSelectedIndex < notesEditor.ScriptFilePaths.Length )
       {
          note.fileName = notesEditor.ScriptFilePaths[newSelectedIndex];
@@ -319,8 +286,8 @@ public class NotesEditorRenderer
          }
       }
 
-      EditorGUILayout.LabelField("LN", GUILayout.Width(filterLabelWidth));
-      note.lineNumber = EditorGUILayout.IntField(note.lineNumber,GUILayout.Width(60));
+      EditorGUILayout.LabelField("LN", GUILayout.Width(StyleKit.LabelWidthSmall));
+      note.lineNumber = EditorGUILayout.IntField(note.lineNumber, GUILayout.Width(StyleKit.LabelWidthMedium));
 
       GUILayout.EndHorizontal();
 
@@ -333,9 +300,9 @@ public class NotesEditorRenderer
    {
       GUILayout.BeginHorizontal();
       // GameObject drag drop field - GameObject
-      EditorGUILayout.LabelField("G-Object", GUILayout.Width(labelWidth));
+      EditorGUILayout.LabelField("Object", GUILayout.Width(StyleKit.LabelWidthMedium));
 
-      if ( GUILayout.Button("Open File(s)", GUILayout.Width(100)) )
+      if ( GUILayout.Button("Open File(s)", GUILayout.Width(StyleKit.ButtonWidthMedium)) )
       {
          notesEditor.Functions.OpenLinkedScripts(note);
       }
@@ -358,10 +325,14 @@ public class NotesEditorRenderer
          int selectedScriptIndex = EditorGUILayout.Popup(0, note.linkedScriptPaths.ToArray());
       }
 
-    
+
 
       GUILayout.EndHorizontal();
    }
+
+
+   //TODO: Scroll bar is there and has an effect on the text area but does not work.
+   private Vector2 textScrollPosition;
 
    /// <summary>
    /// Render Notes Area.
@@ -372,13 +343,22 @@ public class NotesEditorRenderer
 
       GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea)
       {
-         wordWrap = true
+         wordWrap = true,
+         richText = true // Enable rich text formatting
       };
 
-      note.text = EditorGUILayout.TextArea(note.text,textAreaStyle, GUILayout.MinHeight(60), GUILayout.ExpandHeight(true));
+      // Begin a scroll view and use the textScrollPosition to track the scroll position
+      textScrollPosition = EditorGUILayout.BeginScrollView(textScrollPosition, GUILayout.MinHeight(StyleKit.NoteTextAreaHeightMedium));
+
+      // Place the text area inside the scroll view
+      note.text = EditorGUILayout.TextArea(note.text, textAreaStyle, GUILayout.ExpandHeight(true));
+
+      // End the scroll view
+      EditorGUILayout.EndScrollView();
    }
+
 
    #endregion
 
-   
+
 }

@@ -13,6 +13,22 @@ MonoBehaviour:
   m_Name: PSG_Notes
   m_EditorClassIdentifier: 
   notes:
+  - creationDate: 29_Jan - 19:55
+    title: The expand button
+    category: 0
+    completed: 0
+    priority: 1
+    status: 0
+    text: expand button should be shown even if one note is expanded. then turn to
+      collpase.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
   - creationDate: 29_Jan - 16:01
     title: NotesEditor - Import - Ignore NotesSettings File
     category: 0
@@ -53,7 +69,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: Ensure this is synced with active play classes: Player, Ship,
       Pilot'
-    fileName: Assets\Scripts\GameData.cs
+    fileName: Assets/Scripts/GameData.cs
     lineNumber: 12
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -69,7 +85,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: Method: UpdateSaveGameDataWithPlayerData() & UpdatePlayerDataWithSavedGameData()
       in DataController'
-    fileName: Assets\Scripts\GameData.cs
+    fileName: Assets/Scripts/GameData.cs
     lineNumber: 13
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -85,7 +101,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: Update this to the master dictionary from GameData when that is
       implemented.'
-    fileName: Assets\Scenes\Cockpit\CockpitController.cs
+    fileName: Assets/Scenes/Cockpit/CockpitController.cs
     lineNumber: 56
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -100,7 +116,7 @@ MonoBehaviour:
     priority: 1
     status: 1
     text: '//TODO: Decide on default / error case'
-    fileName: Assets\Scenes\Cockpit\CockpitController.cs
+    fileName: Assets/Scenes/Cockpit/CockpitController.cs
     lineNumber: 169
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -116,7 +132,7 @@ MonoBehaviour:
     status: 1
     text: '//TODO: Update to either have two depending on core or level or break
       into two methods to separate going to main menu and back to a level'
-    fileName: Assets\Scenes\Cockpit\CockpitController.cs
+    fileName: Assets/Scenes/Cockpit/CockpitController.cs
     lineNumber: 176
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -132,7 +148,7 @@ MonoBehaviour:
     status: 1
     text: '//TODO: Update these to subscribe straight to inputHandler and accept
       the context values.'
-    fileName: Assets\Scenes\Cockpit\CockpitScreenManager.cs
+    fileName: Assets/Scenes/Cockpit/CockpitScreenManager.cs
     lineNumber: 71
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -150,7 +166,7 @@ MonoBehaviour:
 
       Check
       on this, I think I''ve since updated this to the light displaying the selection.'
-    fileName: Assets\Scenes\Cockpit\CockpitScreenManager.cs
+    fileName: Assets/Scenes/Cockpit/CockpitScreenManager.cs
     lineNumber: 218
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -165,7 +181,7 @@ MonoBehaviour:
     priority: 1
     status: 0
     text: '//TODO: temp indicator, deactivate whatever the new update method is.'
-    fileName: Assets\Scenes\Cockpit\CockpitScreenManager.cs
+    fileName: Assets/Scenes/Cockpit/CockpitScreenManager.cs
     lineNumber: 233
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -180,7 +196,7 @@ MonoBehaviour:
     priority: 0
     status: 1
     text: '//TODO: Map from active player classes.'
-    fileName: Assets\Scripts\GameManager\DataController.cs
+    fileName: Assets/Scripts/GameManager/DataController.cs
     lineNumber: 154
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -195,7 +211,7 @@ MonoBehaviour:
     priority: 0
     status: 1
     text: '//TODO: Ensure this mapping mirrors active classes.'
-    fileName: Assets\Scripts\GameManager\DataController.cs
+    fileName: Assets/Scripts/GameManager/DataController.cs
     lineNumber: 162
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -211,7 +227,7 @@ MonoBehaviour:
     status: 2
     text: '//TODO: Check here to ensure CoreScenes stay up to date with game development
       process.'
-    fileName: Assets\Scripts\GameManager\SceneController.cs
+    fileName: Assets/Scripts/GameManager/SceneController.cs
     lineNumber: 10
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -227,7 +243,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: Everything should be ''saved'' with the player and game data,
       but when switching scenes trigger a save to disk game save.'
-    fileName: Assets\Scripts\LevelManagement\LevelController.cs
+    fileName: Assets/Scripts/LevelManagement/LevelController.cs
     lineNumber: 102
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -243,7 +259,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: This needs to be centralized to avoid duplication for the in game
       pause menu (I might make it so you go to the main menu then quit).'
-    fileName: Assets\Scripts\LevelManagement\MainMenuController.cs
+    fileName: Assets/Scripts/LevelManagement/MainMenuController.cs
     lineNumber: 185
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -258,7 +274,7 @@ MonoBehaviour:
     priority: 0
     status: 0
     text: '//TODO: Make sure any save functions are called first.'
-    fileName: Assets\Scripts\LevelManagement\MainMenuController.cs
+    fileName: Assets/Scripts/LevelManagement/MainMenuController.cs
     lineNumber: 186
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -273,7 +289,7 @@ MonoBehaviour:
     priority: 1
     status: 1
     text: '//TODO: This will be an enum'
-    fileName: Assets\Scripts\Player\PlayerController.cs
+    fileName: Assets/Scripts/Player/PlayerController.cs
     lineNumber: 62
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -289,7 +305,7 @@ MonoBehaviour:
     status: 1
     text: '//TODO: Do whatever check / switch / math needed to derive how much I
       want to add to the radius based on the tdrive state.'
-    fileName: Assets\Scripts\Player\PlayerController.cs
+    fileName: Assets/Scripts/Player/PlayerController.cs
     lineNumber: 65
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -305,7 +321,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: decision if the depletion just stops but need to return to T-Drive
       to replenish.'
-    fileName: Assets\Scripts\Player\ShipController.cs
+    fileName: Assets/Scripts/Player/ShipController.cs
     lineNumber: 38
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -321,7 +337,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: CurrentTDriveState needs to be an enum that aligns with repair
       stages.'
-    fileName: Assets\Scripts\Player\ShipController.cs
+    fileName: Assets/Scripts/Player/ShipController.cs
     lineNumber: 45
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -336,7 +352,7 @@ MonoBehaviour:
     priority: 0
     status: 0
     text: '//TODO: Only for testing to go to level while designing cockpit.'
-    fileName: Assets\Scenes\Cockpit\Screens\MapScreenController.cs
+    fileName: Assets/Scenes/Cockpit/Screens/MapScreenController.cs
     lineNumber: 50
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -352,7 +368,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: create CoRoutine that temp disables controls and performs a short
       altitude jump'
-    fileName: Assets\Scripts\Player\Movement\FlightModeController.cs
+    fileName: Assets/Scripts/Player/Movement/FlightModeController.cs
     lineNumber: 193
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -368,7 +384,7 @@ MonoBehaviour:
     status: 0
     text: '//TODO: create a coroutine that temp disables controls and performs a
       flight direction reversal'
-    fileName: Assets\Scripts\Player\Movement\FlightModeController.cs
+    fileName: Assets/Scripts/Player/Movement/FlightModeController.cs
     lineNumber: 201
     linkedGameObject: {fileID: 0}
     linkedGameObjectPath: 
@@ -376,3 +392,19 @@ MonoBehaviour:
     linkedScriptPaths: []
     isExpanded: 0
     isSelected: 1
+  - creationDate: 29_Jan - 16:18
+    title: Notes Editor
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: When selecting new note, it should auto expand the note, and put it at
+      the top of the list.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0

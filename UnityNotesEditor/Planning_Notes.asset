@@ -12,4 +12,173 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7911ff0dc1011447a2df0d34423423c, type: 3}
   m_Name: Planning_Notes
   m_EditorClassIdentifier: 
-  notes: []
+  notes:
+  - creationDate: 29_Jan - 23:24
+    title: new test note
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: 
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 1
+    isSelected: 0
+  - creationDate: 29_Jan - 16:15
+    title: 'Controls: D-Pad Use'
+    category: 2
+    completed: 0
+    priority: 0
+    status: 0
+    text: 'Radar use/ cockpit or in game.
+
+
+      Use the up/down on the dpad to
+      cycle through waypoint tagged beacons.
+
+
+      Use the left/right to cycle
+      through beacon tags / category.'
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:17
+    title: Game State Manager
+    category: 2
+    completed: 0
+    priority: 0
+    status: 0
+    text: 'Look into the application of a GameState Manager.
+
+
+      This may be
+      an approach for handling going in / out of the cockpit.'
+    fileName: Assets/Scenes/World_1/Level1_1/Level1_1.cs
+    lineNumber: 5
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:24
+    title: 'Cockpit '
+    category: 2
+    completed: 0
+    priority: 0
+    status: 0
+    text: Audio for button navigation.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:25
+    title: Utility Class
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: 'Make a utility class so I can streamline fad ins and fade outs of pop-ups.
+
+
+      other
+      aspects of repeatable animations / design features.'
+    fileName: Assets/Editor/UnityNotesEditor/Scripts/NotesEditor.cs
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:28
+    title: Error Handling
+    category: 3
+    completed: 0
+    priority: 0
+    status: 0
+    text: Review code base to implement more robust error handling.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:29
+    title: Data Controller
+    category: 3
+    completed: 0
+    priority: 0
+    status: 0
+    text: Move the specific I/O out fo data controller
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:30
+    title: Attachment Ideas
+    category: 2
+    completed: 0
+    priority: 0
+    status: 0
+    text: some of the non functinal attachments could need a firmware update. also
+      option to destroy attachment to unload. and non recoverable if later you find
+      the firmware update.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 18:13
+    title: Attachment Ideas
+    category: 2
+    completed: 0
+    priority: 0
+    status: 0
+    text: Make some attachments that can be found, and attached, but don't function.
+      These would be attachments that don't work on your class of ship.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: '29_Jan - 19: 56'
+    title: '//TODO: NotesEditorFunctions.cs: Line 26'
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: '//TODO: This is a new note I am adding .'
+    fileName: Assets/Editor/UnityNotesEditor/Scripts/NotesEditorFunctions.cs
+    lineNumber: 26
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 1
