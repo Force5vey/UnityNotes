@@ -58,7 +58,7 @@ public class NotesEditorFunctions
    /// <summary>
    /// Toggle the expansion state of all notes.
    /// </summary>
-   public void ToggleAllNotes(NotesCollection collectionToToggle)
+   public void ToggleAllNotes( NotesCollectionDefinition collectionToToggle )
    {
       if ( collectionToToggle != null )
       {
@@ -77,7 +77,7 @@ public class NotesEditorFunctions
    /// Helper method to set Expand/Collapse button to correct state.
    /// </summary>
    /// <returns></returns>
-   public bool CheckIfAnyNoteIsExpanded(NotesCollection collectionToCheck)
+   public bool CheckIfAnyNoteIsExpanded( NotesCollectionDefinition collectionToCheck )
    {
       return collectionToCheck != null && collectionToCheck.notes.Any(note => note.isExpanded);
    }
@@ -163,7 +163,6 @@ public class NotesEditorFunctions
             Debug.LogWarning("Failed to load script file at path: " + note.fileName);
          }
       }
-
    }
 
    /// <summary>
@@ -225,8 +224,8 @@ public class NotesEditorFunctions
       if ( notesEditor.NotesCollectionPaths.Length > notesEditor.SelectedNotesCollectionIndex )
       {
          string selectedPath = AssetDatabase.GUIDToAssetPath(
-             AssetDatabase.FindAssets($"t:NotesCollection", new[] { NotesEditor.CachedSettings.notesFolderPath })[notesEditor.SelectedNotesCollectionIndex]);
-         notesEditor.CurrentNotesCollection = AssetDatabase.LoadAssetAtPath<NotesCollection>(selectedPath);
+             AssetDatabase.FindAssets($"t:NotesCollectionDefinition", new[] { NotesEditor.CachedSettings.notesFolderPath })[notesEditor.SelectedNotesCollectionIndex]);
+         notesEditor.CurrentNotesCollection = AssetDatabase.LoadAssetAtPath<NotesCollectionDefinition>(selectedPath);
       }
       notesEditor.UpdateNotesCollectionsList();
    }
@@ -235,7 +234,7 @@ public class NotesEditorFunctions
    /// Toggle the isSelected Property of a note in passed Collection
    /// </summary>
    /// <param name="notesCollection">The collection to work with</param>
-   public void SetAllNotesSelected(NotesCollection notesCollection)
+   public void SetAllNotesSelected( NotesCollectionDefinition notesCollection )
    {
       notesEditor.AllNotesSelected = !notesEditor.AllNotesSelected;
       foreach ( var note in notesCollection.notes )

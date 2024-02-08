@@ -22,5 +22,5 @@ MonoBehaviour:
   - //TODO
   allNotesCollectionPaths:
   - Planning_Notes
-  - PSG_Notes
-  currentCollectionIndex: 1
+  - UnityNotes_Notes
+  currentCollectionIndex: 0

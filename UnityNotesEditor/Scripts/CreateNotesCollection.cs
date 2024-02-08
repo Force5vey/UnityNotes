@@ -10,7 +10,7 @@ public static class CreateNotesCollection
    public static void CreateMyAsset()
    {
       // Create a new instance of NotesCollection
-      NotesCollection asset = ScriptableObject.CreateInstance<NotesCollection>();
+      NotesCollectionDefinition asset = ScriptableObject.CreateInstance<NotesCollectionDefinition>();
 
       // Generate the path and file name for the new asset
       string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath($"{GetFolderPath()}/{GetAssetName()}.asset");

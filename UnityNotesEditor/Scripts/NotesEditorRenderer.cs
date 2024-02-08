@@ -8,10 +8,6 @@ public class NotesEditorRenderer
 {
    private NotesEditor notesEditor;
 
-
-
-
-
    public NotesEditorRenderer( NotesEditor notesEditor )
    {
       this.notesEditor = notesEditor;
@@ -49,9 +45,9 @@ public class NotesEditorRenderer
          notesEditor.Functions.LoadSelectedNotesCollection();
       }
 
-      notesEditor.CurrentNotesCollection = (NotesCollection)EditorGUILayout.ObjectField(
+      notesEditor.CurrentNotesCollection = (NotesCollectionDefinition)EditorGUILayout.ObjectField(
           notesEditor.CurrentNotesCollection,
-          typeof(NotesCollection), false);
+          typeof(NotesCollectionDefinition), false);
 
       GUILayout.EndHorizontal();
    }

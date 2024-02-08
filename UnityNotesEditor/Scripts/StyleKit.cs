@@ -143,8 +143,8 @@ public static class StyleKit
 
             // Set the background texture for normal, hover, and active states
             _mainToolbarButtonSelected.normal.background = toolbarButtonHoverTexture;
-            _mainToolbarButtonSelected.hover.background = toolbarButtonHoverTexture; // Assuming you have this texture
-            _mainToolbarButtonSelected.active.background = toolbarButtonActiveTexture; // Can be same as normal or different
+            _mainToolbarButtonSelected.hover.background = toolbarButtonHoverTexture;
+            _mainToolbarButtonSelected.active.background = toolbarButtonActiveTexture;
 
             // Set the text color for normal, hover, and active states
             _mainToolbarButtonSelected.normal.textColor = ToolbarButtonActiveText;

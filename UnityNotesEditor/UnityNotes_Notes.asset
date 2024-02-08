@@ -1,0 +1,232 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7911ff0dc1011447a2df0d34423423c, type: 3}
+  m_Name: UnityNotes_Notes
+  m_EditorClassIdentifier: 
+  notes:
+  - creationDate: 07_Feb - 11:41
+    title: Note text box
+    category: 3
+    completed: 0
+    priority: 0
+    status: 0
+    text: The message text box needs to be able to get larger.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 07_Feb - 00:59
+    title: Title box in notes detail
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: the title box in notes detail needs its normal contrast color for the text
+      area back, also, the default title display in the expanding area shouldn't
+      have anything or atleast something that doesn't make you want to click on it
+      to add / change the title.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 07_Feb - 00:56
+    title: Note categories, status, and priorities
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: These catogorizations should be set in settings. each need a default non-changeable
+      'not set' option.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 07_Feb - 00:55
+    title: 'verify delete '
+    category: 3
+    completed: 0
+    priority: 0
+    status: 0
+    text: I don't like pop up ok menus to verify delete, so i think something that
+      integrates in the button area so I can click delete all selected and then either
+      it changes to 'verify' but also needs a cancel method. I think make the delete
+      button wide enough so that after first click it 'splits' into two one for confirm
+      and one for cancel.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 07_Feb - 00:53
+    title: Move Notes
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: 'single or batch process to move notes to a different notes collection.
+
+
+      think
+      of this one, I started making a bunch of notes and then I started gettting
+      a lot of psg notes mixed up with the notes editor notes and I need to separate
+      them without having to redo them.'
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 07_Feb - 00:51
+    title: import feature - .ignore file
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: a list that is like a .ignore file that excludes files from the search.
+      default will be the scripts for this tool.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 07_Feb - 00:50
+    title: Catagory color location
+    category: 3
+    completed: 0
+    priority: 0
+    status: 0
+    text: Catogory color should be visible when notes are collapsed.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 07_Feb - 00:47
+    title: isCompleted vs isSelected
+    category: 3
+    completed: 0
+    priority: 0
+    status: 0
+    text: 'the notes display should have isSelected checkbox next to expand arrow.
+
+      then
+      completed is a separate toggle in the notes details.
+
+
+      this allows for
+      the follow: sort by completed, or exclude all completed
+
+      delete selected.
+
+
+      need
+      to have a select all so when the filter is applied there can be easy batch
+      operations.
+
+
+      Additional notes: there is already a status of completed
+      / abandoned. so the bool property of isCompleted should be more like something
+      isArchived. Then they can stay in the notes collection and shown when specifically
+      looked for.'
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:01
+    title: NotesEditor - Import - Ignore NotesSettings File
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: 'It imports the lines that are storing the string values from the import
+      tag settings files.
+
+
+      So basically, the tags need to be the leading item
+      or accept that if a string without comment uses the same tag word...actually,
+      this should be an option for the tag.
+
+
+      something like: Leading only
+      "//TODO" or Anywhere "public string ="TODO"
+
+      leading only would skip
+      anwhere, anywhere would have both. Then this can be for the standard comment
+      style tags but also turned on so it can be for other code keywords or method
+      calls, etc.'
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 16:03
+    title: Notes Editor
+    category: 0
+    completed: 0
+    priority: 0
+    status: 0
+    text: In Notes Editor, the File attachment process, basically because it doesn't
+      work.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0
+  - creationDate: 29_Jan - 19:55
+    title: The expand button
+    category: 0
+    completed: 0
+    priority: 1
+    status: 3
+    text: expand button should be shown even if one note is expanded. then turn to
+      collpase.
+    fileName: 
+    lineNumber: 0
+    linkedGameObject: {fileID: 0}
+    linkedGameObjectPath: 
+    linkedSceneName: 
+    linkedScriptPaths: []
+    isExpanded: 0
+    isSelected: 0

@@ -13,21 +13,6 @@ MonoBehaviour:
   m_Name: Planning_Notes
   m_EditorClassIdentifier: 
   notes:
-  - creationDate: 29_Jan - 23:24
-    title: new test note
-    category: 0
-    completed: 0
-    priority: 0
-    status: 0
-    text: 
-    fileName: 
-    lineNumber: 0
-    linkedGameObject: {fileID: 0}
-    linkedGameObjectPath: 
-    linkedSceneName: 
-    linkedScriptPaths: []
-    isExpanded: 1
-    isSelected: 0
   - creationDate: 29_Jan - 16:15
     title: 'Controls: D-Pad Use'
     category: 2
@@ -167,18 +152,3 @@ MonoBehaviour:
     linkedScriptPaths: []
     isExpanded: 0
     isSelected: 0
-  - creationDate: '29_Jan - 19: 56'
-    title: '//TODO: NotesEditorFunctions.cs: Line 26'
-    category: 0
-    completed: 0
-    priority: 0
-    status: 0
-    text: '//TODO: This is a new note I am adding .'
-    fileName: Assets/Editor/UnityNotesEditor/Scripts/NotesEditorFunctions.cs
-    lineNumber: 26
-    linkedGameObject: {fileID: 0}
-    linkedGameObjectPath: 
-    linkedSceneName: 
-    linkedScriptPaths: []
-    isExpanded: 0
-    isSelected: 1

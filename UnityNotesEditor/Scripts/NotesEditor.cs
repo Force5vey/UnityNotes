@@ -38,8 +38,8 @@ public class NotesEditor :EditorWindow
    public Vector2 ScriptScannerScrollPosition { get; set; }
 
    // Collection being edited
-   private NotesCollection _currentNotesCollection;
-   public NotesCollection CurrentNotesCollection
+   private NotesCollectionDefinition _currentNotesCollection;
+   public NotesCollectionDefinition CurrentNotesCollection
    {
       get => _currentNotesCollection;
       set
@@ -49,8 +49,8 @@ public class NotesEditor :EditorWindow
       }
    }
 
-   private NotesCollection _foundTaggedCommentsCollection;
-   public NotesCollection FoundTaggedCommentsCollection
+   private NotesCollectionDefinition _foundTaggedCommentsCollection;
+   public NotesCollectionDefinition FoundTaggedCommentsCollection
    {
       get => _foundTaggedCommentsCollection;
       set
@@ -60,7 +60,7 @@ public class NotesEditor :EditorWindow
       }
    }
 
-   // UI state properties (public for accessibility)
+   // UI state properties
    public bool AllNotesExpanded { get; set; }
    public bool AllNotesSelected { get; set; }
 
@@ -69,7 +69,7 @@ public class NotesEditor :EditorWindow
    public NoteCategory? SelectedCategoryFilter { get; set; }
    public NoteStatus? SelectedStatusFilter { get; set; }
 
-   // UI colors and icons (public for accessibility and immediate update on change)
+   // UI colors and icons
    public Dictionary<NoteCategory, Color> CategoryColors { get; set; }
    public Dictionary<PriorityLevel, Texture2D> PriorityIcons { get; set; }
 
@@ -95,7 +95,7 @@ public class NotesEditor :EditorWindow
       //Set current tab to defualt tab that opens
       this.CurrentTab = EditorTab.Notes;
 
-      FoundTaggedCommentsCollection = ScriptableObject.CreateInstance<NotesCollection>();
+      FoundTaggedCommentsCollection = ScriptableObject.CreateInstance<NotesCollectionDefinition>();
 
       CacheNotesSettings();
       UpdateNotesCollectionsList();
@@ -194,7 +194,7 @@ public class NotesEditor :EditorWindow
          return;
       }
 
-      string[] guids = AssetDatabase.FindAssets("t:NotesCollection", new[] { CachedSettings.notesFolderPath });
+      string[] guids = AssetDatabase.FindAssets("t:NotesCollectionDefinition", new[] { CachedSettings.notesFolderPath });
       NotesCollectionPaths = guids.Select(AssetDatabase.GUIDToAssetPath)
                                   .Select(System.IO.Path.GetFileNameWithoutExtension)
                                   .ToArray();
@@ -232,6 +232,7 @@ public class NotesEditor :EditorWindow
       }
    }
 
+  //TODO: move stuff fron ONGUI to here for the tab row
    private void RenderTabButtonRow()
    {
       // Get TabNames
